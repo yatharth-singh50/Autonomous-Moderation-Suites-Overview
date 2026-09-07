@@ -228,6 +228,27 @@ This allows the system to move from passive detection toward autonomous moderati
 
 ---
 
+## Data Model
+
+The core moderation state is persisted in a PostgreSQL `users` table. Each record represents a flagged account and stores both the signals that contributed to its evaluation and the operational state associated with how the account entered the threat-intelligence pipeline.
+
+| Column | Type | Purpose |
+|---|---|---|
+| `userid` | `int8` | Unique identifier for the flagged account and primary key. |
+| `flaggedgroups` | `int4` | Number of flagged group associations associated with the account. |
+| `risk` | `text` | Describes the primary risk or detection category associated with the account. |
+| `status` | `text` | Identifies the source through which the account was added or updated, such as manual review, deep crawling, pulse crawling, or shadow scanning. |
+| `updatedat` | `timestamp` | Records when the account's moderation state was last updated. |
+| `flaggedfriends` | `int4` | Number of flagged accounts detected within the account's relevant network. |
+| `riskscore` | `float8` | Numeric risk score produced by the deterministic risk evaluation pipeline. |
+| `tier` | `text` | Represents the resulting risk severity tier used by the moderation system. |
+| `bioflag` | `bool` | Records whether a relevant profile/bio signal was detected. |
+| `created_at` | `timestamp` | Records when the account was first added to the database. |
+
+The table is designed to keep detection signals, risk evaluation, and operational provenance together in a single record. This allows the moderation pipeline to update an account incrementally as new evidence is discovered rather than treating every scan as an independent result.
+
+Frequently queried fields can be indexed according to their access patterns. For example, source-based filtering may use the `status` field, while account-specific lookups naturally benefit from the primary-key index on `userid`. Indexing decisions are made with query frequency and column selectivity in mind rather than indexing every field indiscriminately.
+
 ## Engineering Challenges & Design Decisions
 
 ### API Constraints & Rate Limits
