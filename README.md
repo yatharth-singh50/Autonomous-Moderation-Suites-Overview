@@ -367,64 +367,78 @@ The 22,500+ figure represents accounts **flagged by the system**, rather than a 
 
 ---
 
-## Repository Structure
+## Public Repository Scope
 
-```text
-autonomous-moderation-suite/
-  ├─ public/                 # Static assets and favicon
-  ├─ src/                    # Landing page source code
-  │   ├─ assets/             # Visual assets used by page components
-  │   ├─ components/         # Feature sections, architecture, developer integration, forms
-  │   ├─ App.jsx             # Root app component and global experience state
-  │   ├─ main.jsx            # Vite entry point
-  │   ├─ index.css           # Global styling and theme rules
-  │   └─ App.css             # Additional style declarations
-  ├─ assets/
-  │   └─ Architecture.png   # Distributed system architecture diagram
-  ├─ package.json            # Frontend dependencies and scripts
-  ├─ tailwind.config.js      # Tailwind utility configuration
-  ├─ postcss.config.js       # PostCSS setup
-  ├─ vite.config.js          # Vite build configuration
-  └─ README.md               # Project documentation
-```
+This repository serves as the public-facing architecture and documentation layer for the Autonomous Moderation Suite.
 
----
+The production ecosystem is distributed across multiple services, workers, databases, integrations, and deployment environments. For security and operational reasons, the complete production implementation is not contained in a single public repository.
 
-## Setup
+### Included
 
-1. Install dependencies:
+- Public moderation interface and landing experience
+- Distributed system architecture documentation
+- Detection and risk-scoring methodology
+- Community cache and synchronization design
+- Autonomous processing pipeline
+- Database and persistence model
+- Fault-tolerance and recovery architecture
+- Integration and telemetry concepts
+- Engineering challenges and design decisions
 
-```bash
-npm install
-```
+### Intentionally Separated
 
-2. Run the development server:
+- Production API credentials and secrets
+- Private infrastructure configuration
+- Operational deployment identifiers
+- Sensitive browser-extension implementation
+- Private worker payloads and internal service configuration
+- Production-specific enforcement logic
 
-```bash
-npm run dev
-```
-
-3. Build for production:
-
-```bash
-npm run build
-```
-
-4. Preview the production build locally:
-
-```bash
-npm run preview
-```
+The public repository therefore documents the architecture, engineering decisions, and integration model without exposing operational infrastructure or sensitive implementation details.
 
 ---
 
-## Usage
+## Engineering Focus
 
-- Launch the Vite application to review the public-facing landing experience.
-- Review the `src/components/Architecture.jsx` section for the multi-phase distributed detection flow.
-- Review the `src/components/DeveloperIntegration.jsx` example for game telemetry integration and webhook logging patterns.
-- Use the architecture documentation to understand the web control plane, shared community cache, autonomous processing pipeline, and persistence/recovery layers.
-- Use this repository as the public interface and architecture layer while private cloud services and operational assets remain separated.
+The system was designed around several practical engineering constraints rather than assuming unlimited API access or infrastructure capacity.
+
+### Distributed Processing
+
+Independent workers handle crawling, relationship analysis, risk evaluation, and other workloads so that expensive processing does not block client-facing requests.
+
+### Stateful Caching
+
+Frequently requested community-level data is materialized into a shared cache. A scheduled refresh combined with incremental updates avoids repeatedly processing the complete flagged-user population.
+
+### Fault Tolerance
+
+Retries, fallback processing, scheduled workloads, caching, and disaster-recovery mechanisms reduce the impact of transient service or infrastructure failures.
+
+### Explainable Detection
+
+Risk evaluation uses explicit signals, weights, and thresholds rather than relying on an opaque model for final classification. This makes individual decisions easier to inspect and refine.
+
+### Separation of Concerns
+
+The client interfaces, web control plane, edge layer, processing workers, persistence layer, and recovery mechanisms operate as distinct components with clearly defined responsibilities.
+
+---
+
+## Exploring the Architecture
+
+The recommended starting point is the architecture diagram in `assets/Architecture.png`.
+
+From there, the documentation can be followed in this order:
+
+1. **Architecture** — overall system topology and component responsibilities
+2. **Core Features** — major capabilities and engineering mechanisms
+3. **System Pipeline** — how information moves through the ecosystem
+4. **Data Model** — persistence and moderation state
+5. **Engineering Challenges & Design Decisions** — the constraints that shaped the architecture
+6. **Deployment & Infrastructure** — production service boundaries and recovery design
+7. **Deployment Outcome** — operational scale and current results
+
+The repository is intended to communicate the system's engineering design rather than expose the complete production implementation.
 
 ---
 
