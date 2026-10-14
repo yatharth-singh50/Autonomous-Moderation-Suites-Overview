@@ -325,11 +325,11 @@ Automated database snapshots are retained in separate disaster-recovery storage 
 
 The system has been actively deployed and continuously expanding its threat intelligence database.
 
-As of September 2026, the suite has algorithmically flagged more than **22,500 accounts**, with the count continuing to grow through its scheduled crawler network.
+As of October 2026, the suite has algorithmically flagged more than **28,500 accounts**, with the count continuing to grow through its scheduled crawler network.
 
 The system has operated without direct infrastructure operating expenditure, relying on distributed cloud services, scheduled workers, caching, retries, fallback processing, and automated recovery mechanisms.
 
-The 22,500+ figure represents accounts **flagged by the system**, rather than a claim that every flagged account has been independently confirmed as malicious.
+The 28,500+ figure represents accounts **flagged by the system**, rather than a claim that every flagged account has been independently confirmed as malicious.
 
 ---
 
